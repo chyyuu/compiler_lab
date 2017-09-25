@@ -1,0 +1,29 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+    <id>dist</id>
+    <formats>
+        <format>dir</format>
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <files>
+        <file>
+            <source>${project.build.directory}/minic-edu-app.jar</source>
+            <outputDirectory>.</outputDirectory>
+        </file>
+    </files>
+    <fileSets>
+        <fileSet>
+            <directory>${project.basedir}/src/main/samples/demo</directory>
+            <includes>
+                <include>*.mc</include>
+            </includes>
+            <outputDirectory>./demo</outputDirectory>
+        </fileSet>
+        <fileSet>
+            <directory>${project.build.directory}/jfx/native/minic-edu-app</directory>
+            <outputDirectory>.</outputDirectory>
+        </fileSet>
+    </fileSets>
+</assembly>

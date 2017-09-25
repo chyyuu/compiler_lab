@@ -1,3 +1,5 @@
+*.iml
+dist/
 target/
 .idea
 lex.yy.c
