@@ -1,5 +1,7 @@
 .idea
 lex.yy.c
+y.tab.c
+y.tab.h
 *.pyc
 parser.out
 parsetab.py
