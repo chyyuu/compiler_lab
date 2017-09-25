@@ -1,3 +1,4 @@
+target/
 .idea
 lex.yy.c
 y.tab.c
