@@ -1,0 +1,16 @@
+ildc 20
+ildc 5
+label:
+  label_1:
+    label_2:
+      ildc 1
+      isub
+      dup
+      jz   jump_label
+      swap
+      ildc 10
+      iadd
+      swap
+      jmp  label
+
+jump_label : pop
