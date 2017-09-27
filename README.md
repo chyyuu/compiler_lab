@@ -1,3 +1,44 @@
 # compiler_lab
 
-All labs have been tested on ubuntu 17.04 64 bit, and  some labs have been tested on windows 10 64bit. 
+All programs have been tested on ubuntu 17.04 64 bit, and  some programs have been tested on windows 10 64bit. 
+
+
+## lex & yacc
+1. [count line num using lex&clang](clang/lex_count/)
+1. [upper chars using lex&clang](clang/lex_toupper/)
+1. [calculator using lex&yacc&clang](clang/yacc_lex_exp/)
+1. [calculator using jlex&cup&java](clang/yacc_lex_exp/)
+1. [calculator using ply&python](python2/ply_calc/)
+1. [some simple examples using ply&python](python2/ply_examples/)
+
+## some automaton, turing machine codes
+
+For understanding some concepts and internals of "Formal Languages and Automata"
+
+### automaton
+
+From https://github.com/cforth/toys/tree/master/Automaton
+
+[书籍《计算的本质：深入剖析程序和计算机》](http://www.ituring.com.cn/book/1098)中第三章以及第四章的自动机实现。  
+1. [section 3.1 确定性有限自动机（Deterministic Finite Automaton，DFA）](python3/automaton/DFA.py)
+2. [section 3.2 非确定性有限自动机（Nondeterministic Finite Automata，NFA）](python3/automaton/NFA.py)  
+3. [section 3.3 正则表达式的实现](automaton/Pattern.py)  
+4. [section 3.4 NFA与DFA的等价性](automaton/NFASimulation.py)  
+5. [section 4.1 确定性下推自动机（Deterministic PushDown Automaton，DPDA）](python3/automaton/DPDA.py)  
+6. [section 4.2 非确定性下推自动机（Nondeterministic Pushdown Automaton，NPDA）](python3/automaton/NPDA.py)  
+7. [section 4.3.1 词法分析（Lexical Analyzer）](python3/automaton/LexicalAnalyzer.py)  
+8. [section 4.3.2 语法分析（Grammar Analyzer）](python3/automaton/GrammarAnalyzer.py)
+9. [minimised DFA from DFA from NFA from Regular_Expression](python2/minidfa_dfa_nfa_regex)
+
+### turing machine
+
+From https://github.com/cforth/toys/tree/master/Turing
+
+[《计算的本质：深入剖析程序和计算机》](http://www.ituring.com.cn/book/1098)中第五章的图灵机实现。   
+1. [section 5.1 确定型图灵机（Deterministic Turing Machine，DTM）](python3/turing_machine/DTM.py)
+
+## compiler, interpreter, simulator
+
+1. [Very basic IDE and vizualization/simulation of Mini-C compiler using kotlin](kotlin/minic-edu-app/)
+1. [BASIC language & interpreter using ply &python](python2/ply_BASIC_lang)
+1. [simple stack machine using python](python2/simple_stack_machine)
