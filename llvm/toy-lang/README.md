@@ -1,5 +1,5 @@
 ## From examples of book "LLVM CookBook"
-Tested in ubuntu 17.04
+Tested in ubuntu 17.04, llvm/clang-3.5,3.6,3.7
 
 ### prepare
 ```
