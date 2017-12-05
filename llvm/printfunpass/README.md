@@ -19,4 +19,6 @@ To use it, run this command from the build directory:
 
 	$ opt -load ./build/FnNamePrint.so -funcnameprint test.ll
 
+Show more pass info
+        $ opt -load ./build/FnNamePrint.so  -debug-pass=Structure -funcnameprint test.ll
 
