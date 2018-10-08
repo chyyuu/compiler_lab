@@ -10,6 +10,7 @@ All programs have been tested on ubuntu 17.04 64 bit, and  some programs have be
 1. [calculator using jlex&cup&java](clang/yacc_lex_exp/)
 1. [calculator using ply&python](python2/ply_calc/)
 1. [some simple examples using ply&python](python2/ply_examples/)
+1. [calculator using rust](rust/calculator/)
 
 ## some automaton, turing machine codes
 
