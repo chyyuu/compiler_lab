@@ -1,0 +1,16 @@
+additive_expr = multiplicative_expr, { ("+" | "-"), multiplicative_expr } ;
+multiplicative_expr = parenthetical_multiplicative_expr, { ("*" | "/"), parenthetical_multiplicative_expr } ;
+parenthetical_multiplicative_expr = power_expr, [ "(", additive_expr, ")" ] ;
+power_expr = factor, { "^", factor } ;
+factor = "(", additive_expr, ")"
+       | function, factor
+       | "-", factor
+       | constant
+       | number ;
+function = "sqrt" | "sin" | "cos" | "tan" | "log" ;
+constant = "pi" | "e" ;
+
+digit = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+number = [ "-" ], ( digit, { digit }, [ ".", { digit } ] ) | ( ".", digit, { digit } ) ;
+===============
+expr = binop | pow | neg | function | constant

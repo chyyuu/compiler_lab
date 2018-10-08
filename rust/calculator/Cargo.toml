@@ -1,0 +1,17 @@
+[package]
+name = "rsc"
+version = "1.0.0"
+authors = ["Luke Wilson, Yu Chen"]
+description = "RSC is a handwritten scientific calculator for use in Rust projects that require turning an equation inside a string into a result."
+repository = "https://github.com/chyyuu/compiler_lab/tree/master/rust/calculator/"
+readme = "README.md"
+keywords = ["scientific", "calculator", "parser", "expression"]
+categories = ["command-line-utilities", "parsing", "science"]
+license = "MIT"
+
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+name = "rsc"
+path = "src/main.rs"
