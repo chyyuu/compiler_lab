@@ -1,5 +1,6 @@
 *.iml
 dist/
+Cargo.lock
 target/
 .idea
 lex.yy.c
