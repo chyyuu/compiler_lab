@@ -1,0 +1,9 @@
+[package]
+name = "lisp-interpreter-in-nom"
+version = "0.1.0"
+authors = ["Yu Chen <yuchen@tsinghua.edu.cn>"]
+edition = "2018"
+
+[dependencies]
+nom = "5.0"
+jemallocator = "^0.1"
