@@ -10,3 +10,7 @@ license = "MIT"
 [[example]]
 name = "lexer_repl"
 path = "src/examples/lexer_repl.rs"
+
+[[example]]
+name = "parser_repl"
+path = "src/examples/parser_repl.rs"
