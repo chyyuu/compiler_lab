@@ -1,8 +1,12 @@
 [package]
 name = "monkey"
 version = "0.1.0"
-authors = ["Paul Dix <paul@pauldix.net>"]
+authors = ["Paul Dix <paul@pauldix.net>","chyyuu <yuchen@tsinghua.edu.cn"]
 description = "A rust implementation of Thorsten Ball's Monkey programming language."
 license = "MIT"
 
 [dependencies]
+
+[[example]]
+name = "lexer_repl"
+path = "src/examples/lexer_repl.rs"
