@@ -23,6 +23,8 @@ fn start<R: io::BufRead, W: io::Write>(mut reader: R, mut writer: W) -> io::Resu
         let prog = p.parse_program().unwrap();
 
         println!("======== Parser Output ===========");
+        println!("{}",prog.to_string());
+
         for s in prog.statements {
             println!("{:?}",s);
         }
