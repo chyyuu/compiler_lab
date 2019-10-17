@@ -51,17 +51,18 @@ rustup default nightly
    - [crates in USTC mirror 方法](http://mirrors.ustc.edu.cn/help/crates.io-index.html)
    - [crates in rust.cc mirror 方法](https://github.com/rustcc/lernaean-deploy/)
 4. git pull试验代码, 测试用例，decaf试验综述文档和试验指导文档(便于本地查阅)
-```
+```shell
+## decaf intro & guide docs
+git clone https://github.com/decaf-lang/decaf-2019-project.git
+git clone https://github.com/decaf-lang/decaf-book-spec.git
 ## code
 git clone https://github.com/decaf-lang/decaf-rs.git
 cd decaf-rs
 ## testcase
 rm -rf testcase
-git clone https://github.com/decaf-lang/decaf-2019-TestCases testcase
-## decaf intro & guide docs
-cd ..
-git clone https://github.com/decaf-lang/decaf-2019-project.git
-git clone https://github.com/decaf-lang/decaf-book-spec.git
+git clone https://github.com/decaf-lang/decaf-2019-TestCase testcase
+## run&test
+cargo run --bin test
 ```
 5. 阅读在线文档
 
