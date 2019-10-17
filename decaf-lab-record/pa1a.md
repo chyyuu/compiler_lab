@@ -15,7 +15,7 @@
 - driver：将各个crate的内容整合起来，组成一个可执行文件并执行测试
 
 ## 实验总结
-得到lch助教的帮助，按照倒序的过程来实现。在理解编译原理和大致处理过程的情况下，根据错误和已有实现代码，采用试错大法完成。需要理解和修改的关键root文件是`syntax/src/parser.rs`。
+得到lch助教的帮助，按照倒序的过程来实现。在理解编译原理和大致处理过程的情况下，根据错误和已有实现代码，采用试错大法完成。需要理解和修改的关键root文件是`syntax/src/parser.rs`。按照 token, parser, 其它相关依赖代码的顺序来理解和修改代码。
 
 1. eca49d527e450c5ec1cee493335bbf0913a7c69a (HEAD -> pa1a, origin/pa1a) add Lambda process in impl Printable for Expr<'_>. fix some unimplemented funs in tacgen/lib.rs and typeck/type_pass.rs
 2. c81a0c6319552d44015b772fa1a9e35962078a93 add SynTyKind::Func process in impl Printable for SynTy & impl<'a> TypeCk<'a>
@@ -50,13 +50,20 @@ rustup default nightly
 3. （可选）更新crates mirror(为了编译过程中的下载提速)
    - [crates in USTC mirror 方法](http://mirrors.ustc.edu.cn/help/crates.io-index.html)
    - [crates in rust.cc mirror 方法](https://github.com/rustcc/lernaean-deploy/)
-4. git pull试验代码, decaf试验综述文档和试验指导文档(便于本地查阅)
+4. git pull试验代码, 测试用例，decaf试验综述文档和试验指导文档(便于本地查阅)
 ```
+## code
 git clone https://github.com/decaf-lang/decaf-rs.git
+cd decaf-rs
+## testcase
+rm -rf testcase
+git clone https://github.com/decaf-lang/decaf-2019-TestCases testcase
+## decaf intro & guide docs
+cd ..
 git clone https://github.com/decaf-lang/decaf-2019-project.git
 git clone https://github.com/decaf-lang/decaf-book-spec.git
 ```
-4. 阅读在线文档
+5. 阅读在线文档
 
 - [decaf 试验综述文档](https://decaf-project.gitbook.io/decaf-2019/)
 - [decaf试验指导文档](https://decaf-lang.gitbook.io/decaf-book/)
