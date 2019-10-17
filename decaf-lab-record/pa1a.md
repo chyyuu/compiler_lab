@@ -15,7 +15,7 @@
 - driver：将各个crate的内容整合起来，组成一个可执行文件并执行测试
 
 ## 实验总结
-得到lch助教的帮助，按照倒序的过程来实现。在理解编译原理和大致处理过程的情况下，根据错误和已有实现代码，采用试错大法完成。
+得到lch助教的帮助，按照倒序的过程来实现。在理解编译原理和大致处理过程的情况下，根据错误和已有实现代码，采用试错大法完成。需要理解和修改的关键root文件是`syntax/src/parser.rs`。
 
 1. eca49d527e450c5ec1cee493335bbf0913a7c69a (HEAD -> pa1a, origin/pa1a) add Lambda process in impl Printable for Expr<'_>. fix some unimplemented funs in tacgen/lib.rs and typeck/type_pass.rs
 2. c81a0c6319552d44015b772fa1a9e35962078a93 add SynTyKind::Func process in impl Printable for SynTy & impl<'a> TypeCk<'a>
