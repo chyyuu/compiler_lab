@@ -67,3 +67,68 @@ a.other.set(Some(b));
 b.other.set(Some(a));
 
 ```
+
+
+在某些情况下，您也可以使用arena。arena保证存储在其中的值与arena本身具有相同的生存期。这意味着添加更多的值不会使任何现有生命周期无效，但会移动arena。因此，如果您需要返回树，则这种解决方案是不可行的。通过从节点本身删除所有权来解决此问题。这是一个示例，该示例还使用内部可变性来允许节点在创建后进行改变。在其他情况下，如果仅构造树然后简单地对其进行导航，则可以删除此可变性。
+```
+//tree
+struct Tree<'a, T: 'a> {
+    nodes: Arena<Node<'a, T>>,
+}
+
+impl<'a, T> Tree<'a, T> {
+    fn new() -> Tree<'a, T> {
+        Self {
+            nodes: Arena::new(),
+        }
+    }
+    fn new_node(&'a self, data: T) -> &'a mut Node<'a, T> {
+        self.nodes.alloc(Node {
+            data,
+            tree: self,
+            parent: Cell::new(None),
+            children: RefCell::new(Vec::new()),
+        })
+    }
+}
+
+
+struct Node<'a, T: 'a> {
+    data: T,
+    tree: &'a Tree<'a, T>,
+    parent: Cell<Option<&'a Node<'a, T>>>,
+    children: RefCell<Vec<&'a Node<'a, T>>>,
+}
+impl<'a, T> Node<'a, T> {
+    fn add_node(&'a self, data: T) -> &'a Node<'a, T> {
+        let child = self.tree.new_node(data);
+        child.parent.set(Some(self));
+        self.children.borrow_mut().push(child);
+        child
+    }
+}
+impl<'a, T> fmt::Debug for Node<'a, T>
+where    T: fmt::Debug
+{
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{:?}", self.data)?;
+        write!(f, " (")?;
+        for c in self.children.borrow().iter() {
+            write!(f, "{:?}, ", c)?;
+        }
+        write!(f, ")")
+    }
+}
+
+fn main() {
+    //tree    
+    let tree = Tree::new();
+    let head = tree.new_node(1);
+    let _left = head.add_node(2);
+    let _right = head.add_node(3);
+    println!("{:?}", head); // 1 (2 (), 3 (), )
+}
+```
+
+```
+
