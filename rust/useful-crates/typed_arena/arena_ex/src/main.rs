@@ -1,6 +1,6 @@
 extern crate typed_arena;
 
-use std::cell::RefCell;
+use std::cell::{RefCell,Cell};
 use typed_arena::Arena;
 
 struct NodeData<'a> {
@@ -16,6 +16,10 @@ impl<'a> Drop<'a> for NodeData<'a> {
     fn drop(&mut self) {}
 }
 */
+//safe cycle
+struct CycleParticipant<'a> {
+    other: Cell<Option<&'a CycleParticipant<'a>>>,
+}
 
 fn main() {
     let nodes = Arena::new(); 
@@ -23,4 +27,14 @@ fn main() {
     node0.references.borrow_mut().push(node0);
     let node1 = nodes.alloc(NodeData { references: RefCell::new(vec![]) });
     node0.references.borrow_mut().push(node1);
+
+
+
+    //safe cycle
+    let arena = Arena::new();
+
+    let a = arena.alloc(CycleParticipant { other: Cell::new(None) });
+    let b = arena.alloc(CycleParticipant { other: Cell::new(None) });
+    a.other.set(Some(b));
+    b.other.set(Some(a));
 }

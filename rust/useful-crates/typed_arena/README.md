@@ -44,3 +44,26 @@ fn main() {
 }
 
 ```
+
+
+
+Safe Cycles
+All allocated objects get the same lifetime, so you can safely create cycles between them. This can be useful for certain data structures, such as graphs and trees with parent pointers.
+
+```
+use std::cell::Cell;
+use typed_arena::Arena;
+
+struct CycleParticipant<'a> {
+    other: Cell<Option<&'a CycleParticipant<'a>>>,
+}
+
+let arena = Arena::new();
+
+let a = arena.alloc(CycleParticipant { other: Cell::new(None) });
+let b = arena.alloc(CycleParticipant { other: Cell::new(None) });
+
+a.other.set(Some(b));
+b.other.set(Some(a));
+
+```
