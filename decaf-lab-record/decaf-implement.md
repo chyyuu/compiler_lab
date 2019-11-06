@@ -78,7 +78,7 @@ I-->|expand|J[parser.act]
 
 #### 对decaf spec词法的理解问题？
 ```
-syntax/parser_ll.rs lexer部分
+syntax/parser_ll.rs [lexical]部分
 # line break in a StringLit will be reported by parser's semantic act
 '"[^"\\]*(\\.[^"\\]*)*"' = 'StringLit'   //???
 '"[^"\\]*(\\.[^"\\]*)*' = 'UntermString' //???
