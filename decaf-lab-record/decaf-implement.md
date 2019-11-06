@@ -68,38 +68,69 @@ in syntax/parser.rs  syntax/parser_ll.rs
 in syntax/parser.rs  syntax/parser_ll.rs
 ```
 Program -> ClassList
+
 ClassList -> ClassDef ClassList
 ClassList ->
+
 ClassDef -> Class Id MaybeExtends LBrc FieldList RBrc
 ClassDef -> Abstract Class Id MaybeExtends LBrc FieldList RBrc
+
 MaybeExtends -> Extends Id
 MaybeExtends ->
+
 FieldList -> FieldDef FieldList
 FieldList ->
+
 FieldDef -> Static Type Id LPar VarDefListOrEmpty RPar Block
 FieldDef -> Abstract Type Id LPar VarDefListOrEmpty RPar Semi
 FieldDef -> Type Id FuncOrVar
+
 FuncOrVar -> LPar VarDefListOrEmpty RPar Block
 FuncOrVar -> Semi
+
 VarDefListOrEmpty -> VarDefList
 VarDefListOrEmpty ->
+
+Type -> SimpleType ArrayOrLambda
+
+SimpleType -> Int
+SimpleType -> Bool
+SimpleType -> Void
+SimpleType -> String
+SimpleType -> Class Id
+
+ArrayOrLambda -> LBrk RBrk ArrayOrLambda
+ArrayOrLambda -> LPar TypeListOrEmpty RPar ArrayOrLambda
+ArrayOrLambda ->
+
 VarDefList -> VarDef VarDefListRem
+
 VarDefListRem -> Comma VarDef VarDefListRem
 VarDefListRem ->
-ExprListOrEmpty -> ExprList
+
+ExprListOrEmpty -> ExprList      //for Term8
 ExprListOrEmpty ->
+
 ExprList -> Expr ExprListRem
+
 ExprListRem -> Comma Expr ExprListRem
 ExprListRem ->
-TypeListOrEmpty -> TypeList
+
+TypeListOrEmpty -> TypeList    //for NewArrayRem  AND  ArrayOrLambda
 TypeListOrEmpty ->
+
 TypeList -> Type TypeListRem
+
 TypeListRem -> Comma Type TypeListRem
 TypeListRem ->
+
 VarDef -> Type Id
-Block -> LBrc StmtList RBrc
+
+Block -> LBrc StmtList RBrc  // for LambdaBody AND Stmt
+
 StmtList -> Stmt StmtList
 StmtList ->
+
 Stmt -> Simple Semi
 Stmt -> If LPar Expr RPar Stmt MaybeElse
 Stmt -> While LPar Expr RPar Stmt
@@ -108,17 +139,23 @@ Stmt -> Return MaybeExpr Semi
 Stmt -> Print LPar ExprList RPar Semi
 Stmt -> Break Semi
 Stmt -> Block
+
 Simple -> Expr MaybeAssign
 Simple -> Type Id MaybeAssign
 Simple -> Var Id Assign Expr
 Simple ->
+
 MaybeAssign -> Assign Expr
 MaybeAssign ->
+
 Blocked -> Stmt
+
 MaybeElse -> Else Blocked
 MaybeElse ->
+
 MaybeExpr -> Expr
 MaybeExpr ->
+
 Op1 -> Or
 Op2 -> And
 Op3 -> Eq
@@ -134,37 +171,23 @@ Op6 -> Div
 Op6 -> Mod
 Op7 -> Sub
 Op7 -> Not
-Expr -> Expr1
-Expr -> Fun LPar VarDefListOrEmpty RPar LambdaBody
+
 LambdaBody -> Arrow Expr
 LambdaBody -> Block
+
+Expr -> Expr1
+Expr -> Fun LPar VarDefListOrEmpty RPar LambdaBody
+
 Expr1 -> Expr2 Term1
-Term1 -> Op1 Expr2 Term1 // or
-Term1 ->
 Expr2 -> Expr3 Term2
-Term2 -> Op2 Expr3 Term2 // and
-Term2 ->
 Expr3 -> Expr4 Term3
-Term3 -> Op3 Expr4 Term3 // eq, ne
-Term3 ->
 Expr4 -> Expr5 Term4
-Term4 -> Op4 Expr5 Term4 // lt, le, ge, gt
-Term4 ->
 Expr5 -> Expr6 Term5
-Term5 -> Op5 Expr6 Term5 // add sub
-Term5 ->
 Expr6 -> Expr7 Term6
-Term6 -> Op6 Expr7 Term6 // mul, div, mod
-Term6 ->
 Expr7 -> Op7 Expr7 // not, neg
 Expr7 -> LPar ParenOrCast
 Expr7 -> Expr8
 Expr8 -> Expr9 Term8
-//Expr8 -> Expr9 Term8
-Term8 -> LBrk Expr RBrk Term8
-Term8 -> Dot Id Term8
-Term8 -> LPar ExprListOrEmpty RPar Term8
-Term8 ->
 Expr9 -> IntLit
 Expr9 -> True
 Expr9 -> False
@@ -176,23 +199,35 @@ Expr9 -> This
 Expr9 -> InstanceOf LPar Expr Comma Id RPar
 Expr9 -> Id
 Expr9 -> New NewClassOrArray
+
+Term1 -> Op1 Expr2 Term1 // or
+Term1 ->
+Term2 -> Op2 Expr3 Term2 // and
+Term2 ->
+Term3 -> Op3 Expr4 Term3 // eq, ne
+Term3 ->
+Term4 -> Op4 Expr5 Term4 // lt, le, ge, gt
+Term4 ->
+Term5 -> Op5 Expr6 Term5 // add sub
+Term5 ->
+Term6 -> Op6 Expr7 Term6 // mul, div, mod
+Term6 ->
+Term8 -> LBrk Expr RBrk Term8
+Term8 -> Dot Id Term8
+Term8 -> LPar ExprListOrEmpty RPar Term8
+Term8 ->
+
 NewClassOrArray -> Id LPar RPar
 NewClassOrArray -> SimpleType NewArrayRem
+
 ParenOrCast -> Expr RPar
 ParenOrCast -> Class Id RPar Expr9
+
 NewArrayRem -> LBrk AfterLBrk
 NewArrayRem -> LPar TypeListOrEmpty RPar NewArrayRem
+
 AfterLBrk -> Expr RBrk
 AfterLBrk -> RBrk NewArrayRem
-SimpleType -> Int
-SimpleType -> Bool
-SimpleType -> Void
-SimpleType -> String
-SimpleType -> Class Id
-Type -> SimpleType ArrayOrLambda
-ArrayOrLambda -> LBrk RBrk ArrayOrLambda
-ArrayOrLambda -> LPar TypeListOrEmpty RPar ArrayOrLambda
-ArrayOrLambda ->
 ```
 
 ### 程序结构（syntax/src/ast.rs）
@@ -285,3 +320,13 @@ syntax/parser_ll.rs [lexical]部分
 '[A-Za-z]\w*' = 'Id'
 '.' = '_Err' //??? 与 '\.' = 'Dot'的区别是啥？
 ```
+
+#### blocked的语法规则有必要吗？
+```
+Blocked -> Stmt
+MaybeElse -> Else Blocked
+```
+
+#### 语法规则为何由op1-7的划分？
+
+为了表现出优先级
