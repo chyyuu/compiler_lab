@@ -1,5 +1,5 @@
 ### 词法描述
-in syntax/parser.rs  syntax/parser_ll.rs
+in syntax/parser_ll.rs
 ```
 [lexical]
 'void' = 'Void'
@@ -65,7 +65,106 @@ in syntax/parser.rs  syntax/parser_ll.rs
 ```
 
 ### 语法描述
-in syntax/parser.rs  syntax/parser_ll.rs
+
+in  syntax/parser.rs   90 Productions
+
+```
+Program -> ClassList
+ClassList -> ClassList ClassDef
+ClassList -> ClassDef
+ClassDef -> Class Id MaybeExtends LBrc FieldList RBrc
+ClassDef -> Abstract Class Id MaybeExtends LBrc FieldList RBrc
+MaybeExtends -> Extends Id
+MaybeExtends ->
+FieldList -> FieldList VarDef Semi
+FieldList -> FieldList FuncDef
+FieldList ->
+FuncDef -> Abstract Type Id LPar VarDefListOrEmpty RPar Semi
+FuncDef -> Static Type Id LPar VarDefListOrEmpty RPar Block
+FuncDef -> Type Id LPar VarDefListOrEmpty RPar Block
+VarDef -> Type Id
+VarDefListOrEmpty -> VarDefList
+VarDefListOrEmpty ->
+VarDefList -> VarDefList Comma VarDef
+VarDefList -> VarDef
+Block -> LBrc StmtList RBrc
+StmtList -> StmtList Stmt
+StmtList ->
+Stmt -> Simple Semi
+Stmt -> If LPar Expr RPar Stmt MaybeElse
+Stmt -> While LPar Expr RPar Stmt
+Stmt -> For LPar Simple Semi Expr Semi Simple RPar Stmt
+Stmt -> Return Expr Semi
+Stmt -> Return Semi
+Stmt -> Print LPar ExprList RPar Semi
+Stmt -> Break Semi
+Stmt -> Block
+MaybeElse -> Else Stmt
+MaybeElse ->
+Simple -> LValue Assign Expr
+Simple -> VarDef // the VarDef without init
+Simple -> Type Id Assign Expr // the VarDef with init
+Simple -> Var Id Assign Expr // the VarDef with init
+Simple -> Expr
+Simple ->
+Expr -> LValue
+Expr -> Expr LPar ExprListOrEmpty RPar
+Expr -> IntLit
+Expr -> True
+Expr -> False
+Expr -> StringLit
+Expr -> Null
+Expr -> LPar Expr RPar
+Expr -> Expr Add Expr
+Expr -> Expr Sub Expr
+Expr -> Expr Mul Expr
+Expr -> Expr Div Expr
+Expr -> Expr Mod Expr
+Expr -> Expr Eq Expr
+Expr -> Expr Ne Expr
+Expr -> Expr Lt Expr
+Expr -> Expr Le Expr
+Expr -> Expr Ge Expr
+Expr -> Expr Gt Expr
+Expr -> Expr And Expr
+Expr -> Expr Or Expr
+Expr -> ReadInteger LPar RPar
+Expr -> ReadLine LPar RPar
+Expr -> This
+Expr -> New Id LPar RPar
+Expr -> New Type LBrk Expr RBrk
+Expr -> InstanceOf LPar Expr Comma Id RPar
+Expr -> LPar Class Id RPar Expr
+Expr -> Sub Expr
+Expr -> Not Expr
+Expr -> Fun LPar VarDefListOrEmpty RPar Arrow Expr
+Expr -> Fun LPar VarDefListOrEmpty RPar Block
+ExprList -> ExprList Comma Expr
+ExprList -> Expr
+ExprListOrEmpty -> ExprList
+ExprListOrEmpty ->
+MaybeOwner -> Expr Dot
+MaybeOwner ->
+VarSel -> MaybeOwner Id
+LValue -> VarSel
+LValue -> Expr LBrk Expr RBrk
+Type -> Int
+Type -> Bool
+Type -> Void
+Type -> StringExprList
+Type -> Class Id
+Type -> Type LBrk RBrk
+Type -> Type LPar TypeListOrEmpty RPar
+TypeList -> TypeList Comma Type
+TypeList -> Type
+TypeListOrEmpty -> TypeList
+TypeListOrEmpty ->
+```
+
+
+
+in  syntax/parser_ll.rs ONLY used in PA1B  125 Productions
+
 ```
 Program -> ClassList
 
@@ -302,7 +401,13 @@ H-->I[parser._parse]
 I-->|expand|J[parser.act]
 ```
 
+另外，通过 
 
+```
+cargo doc
+```
+
+可以得到项目的函数文档。
 
 ### QA
 
@@ -321,7 +426,14 @@ syntax/parser_ll.rs [lexical]部分
 '.' = '_Err' //??? 与 '\.' = 'Dot'的区别是啥？
 ```
 
+ANSWER：
+
+`'"[^"\\]*(\\.[^"\\]*)*"' = 'StringLit' `定义就是匹配一般的字符串常量的正则表达式，可参考https://stackoverflow.com/questions/37032620/regex-for-matching-a-string-literal-in-java 中对它的解释。
+
+`'"[^"\\]*(\\.[^"\\]*)*' = 'UntermString' `定义则比较奇怪，可以看出它比第一个少了末尾的一个引号。是因为decaf语言要求检查这种语法错误：不闭合的字符串，即直到程序的末尾也没有出现末尾的引号。
+
 #### blocked的语法规则有必要吗？
+
 ```
 Blocked -> Stmt
 MaybeElse -> Else Blocked
