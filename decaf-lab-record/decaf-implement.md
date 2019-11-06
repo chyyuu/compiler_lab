@@ -76,3 +76,15 @@ I-->|expand|J[parser.act]
 
 #### 为何syntax/src/ast.rs中的`struct ASTAlloc`中只有`class, func,var,program`，没有`expr`等？
 
+### 对decaf spec词法的理解问题？
+```
+syntax/parser_ll.rs lexer部分
+# line break in a StringLit will be reported by parser's semantic act
+'"[^"\\]*(\\.[^"\\]*)*"' = 'StringLit'   //???
+'"[^"\\]*(\\.[^"\\]*)*' = 'UntermString' //???
+'//[^\n]*' = '_Eps'
+'\s+' = '_Eps'   //all space ??? 
+'\d+|(0x[0-9a-fA-F]+)' = 'IntLit'
+'[A-Za-z]\w*' = 'Id'
+'.' = '_Err' //??? 与 '\.' = 'Dot'的区别是啥？
+```
