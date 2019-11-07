@@ -1,5 +1,5 @@
 [package]
-name = "simple-parser"
+name = "calc-ll"
 version = "0.1.0"
 authors = ["Yu Chen <yuchen@tsinghua.edu.cn>"]
 edition = "2018"
@@ -8,3 +8,5 @@ edition = "2018"
 
 [dependencies]
 parser-macros = { git = "https://github.com/MashPlant/lalr1" }
+hashbrown = { version = "0.5", features = ["nightly"] }
+lazy_static = "1.3"
