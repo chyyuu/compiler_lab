@@ -1,6 +1,6 @@
 Please see contents in
 
-https://mashplant.gitbook.io/decaf-doc/pa1a/lalr1-shi-yong-zhi-dao/yi-ge-wan-zheng-de-li-zi
+https://mashplant.gitbook.io/decaf-doc/pa1b
 
 Tested on rustc 1.40.0-nightly (1423bec54 2019-11-05) in ubuntu 19.10 x86-64
 
@@ -11,8 +11,7 @@ Prepare
 Try
 ```
 $ cargo build   //compiling and show the expanded parser codes.
-$ cargo run     //running
+$ cargo run     //running and show something
 $ xdot dfa.dot  //show 词法的确定有限状态自动机
-$ xdot fsm      //show LALR的语法有限状态机
-$ less verbose.txt //show 产生式
+$ less verbose.txt //show 产生式 first 集合，follow 集合
 ```
