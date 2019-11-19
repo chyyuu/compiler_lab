@@ -49,11 +49,11 @@ This code can be compiled to machine executable code:
 
 ```
 -- Assemble the above fibonacci program
-$ ./pl0_assembler.py < examples/fibonacci.pl0a
+$ ./pl0_assembler.py examples/fibonacci.pl0a
 [16, 5, 1, 1, 20, 6, 2, 50, 6, 3, 45, 6, 3, 7, 2, 7, 3, 10, 1, 6, 4, 46, 12, 7, 4, 20, 5]
 
 -- Feed the machine code to the virtual machine
-$ ./pl0_assembler.py < examples/fibonacci.pl0a | ./pl0_machine.py
+$ ./pl0_machine.py  examples/fibonacci.pl0m
 1
 1
 2

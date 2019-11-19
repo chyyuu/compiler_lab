@@ -260,9 +260,20 @@ class Machine:
         print "Sequence: " + `self.sequence`
         print "Stack: " + `self.stack`
         print "Offset: " + `self.offset`
-
+
+def usage():
+    print "./pl0_machine.py inputfile"
+
 if __name__ == '__main__':
-    buffer = sys.stdin.read()
+    if __name__ == '__main__':
+        if len(sys.argv) < 2:
+            usage()
+            sys.exit(0)
+
+        input_file = sys.argv[1]
+        with open(input_file) as f:
+            buffer = f.read()
+
     code = eval(buffer)
     machine = Machine(code)
     machine.run()

@@ -67,7 +67,18 @@ def assemble(input):
 
     # This updates any indirect labels
     return list(labels.get(x, x) for x in buffer)
-
+
+def usage():
+    print "./pl0_assemble.py inputfile"
+
 if __name__ == '__main__':
-    code = assemble(sys.stdin)
+    if len(sys.argv)  <2 :
+            usage()
+            sys.exit(0)
+
+    input_file = sys.argv[1]
+    with open(input_file) as f:
+        buf = f.readlines()
+
+    code = assemble(buf)
     print `code`

@@ -8,11 +8,11 @@ In this example, we demonstrate assembling some code to print the number 25, and
 
 ```
 -- Generate some machine code to print out the number 25
-$ echo "PUSH 25 PRINT" | ./pl0_assembler.py
+$ ./pl0_assembler.py examples/ex1.pl0a
 [10, 25, 50]
 
 -- Execute the machine code
-$ echo "[10, 25, 50]" | ./pl0_machine.py
+$ ./pl0_machine.py examples/ex1.pl0m
 25
 -- Machine State --
 Sequence: [10, 25, 50]

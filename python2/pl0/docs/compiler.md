@@ -30,7 +30,7 @@ END.
 Using the PL/0 compiler we can convert this program to PL/0 assembly language:
 
 ```
-$ ./pl0_compiler.py < examples/fibonacci.pl0 > examples/fibonacci.pl0a
+$ ./pl0_compiler.py  examples/fibonacci.pl0
 ```
 
 The assembly code generated:

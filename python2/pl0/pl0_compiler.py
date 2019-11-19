@@ -198,9 +198,19 @@ class Compiler(StackingNodeVisitor):
             print "\tPUSH", value
         else:
             raise NameError("Invalid value name " + node[1] + " of type " + defined)
-
+
+def usage():
+    print "./pl0_compiler.py inputfile"
+
 if __name__ == '__main__':
-    code = sys.stdin.read()
+    if len(sys.argv)  <2 :
+            usage()
+            sys.exit(0)
+
+    input_file = sys.argv[1]
+    with open(input_file) as f:
+        code = f.read()
+
     parser = pl0_parser.Parser()
     parser.input(code)
     program = parser.p_program()

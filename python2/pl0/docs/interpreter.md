@@ -7,7 +7,7 @@ The PL/0 interpreter uses a tree traversal approach to execute code. This means 
 We can execute the multiply program using the interpreter:
 
 ```
-$ ./pl0_interpreter.py < examples/multiply.pl0
+$ ./pl0_interpreter.py examples/multiply.pl0
 200
 -- Stack Frame --
 Constants: {}
