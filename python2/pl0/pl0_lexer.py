@@ -119,13 +119,22 @@ lexer = lex.lex()
 def create():
     return lexer.clone()
 
+def usage():
+    print "./pl0_compiler.py inputfile"
+
 if __name__ == "__main__":
-    code = sys.stdin.read()
+
+    if len(sys.argv)  <2 :
+            usage()
+            sys.exit(0)
+
+    input_file = sys.argv[1]
+    with open(input_file) as f:
+        code = f.read()
 
     lex.input(code)
 
     while True:
         tok = lex.token()
         if not tok: break
-
         print(tok)
