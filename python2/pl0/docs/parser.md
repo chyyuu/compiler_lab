@@ -7,7 +7,7 @@ A parser converts a sequence of tokens into a tree data structure. This tree can
 Here is the PL/0 syntax tree for the multiply program:
 
 ```
-$ ./pl0_parser.py < examples/multiply.pl0
+$ ./pl0_parser.py examples/multiply.pl0
 PROGRAM
   BLOCK
     VARIABLES
@@ -44,7 +44,7 @@ We can also visualise programs using graphviz:
 
 ```
 -- You will need to install graphviz in order to generate graphs from source code files.
-$ ./pl0_graphviz.py < examples/multiply.pl0 
+$ ./pl0_graphviz.py  examples/multiply.pl0
 Generating Graph...
 dot - graphviz version 2.26.3 (20100126.1600)
 -- Snip --
