@@ -1,0 +1,16 @@
+: main 
+ #1
+ -1 *
+ putn space
+ #3
+ putn space
+ #0
+ -1 *
+ putn space
+ #1
+ #0
+ *
+ -1 *
+ putn space
+;
+main bye

@@ -1,0 +1,5 @@
+: main 
+ 1
+ putn space
+;
+main bye

@@ -1,0 +1,17 @@
+variable t_var_x_1
+: main 
+ #0
+ !t_var_x_1
+[
+ @t_var_x_1
+ #1
+ +
+ !t_var_x_1
+ @t_var_x_1
+ putn space
+ @t_var_x_1
+ #5
+ <
+] while
+;
+main bye

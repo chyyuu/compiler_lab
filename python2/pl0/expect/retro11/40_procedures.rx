@@ -1,0 +1,26 @@
+variable t_var_i_1
+( Procedure square )
+variable t_var_n_3
+ : t_proc_square_2 
+ @t_var_i_1
+ !t_var_n_3
+ @t_var_n_3
+ @t_var_n_3
+ *
+ putn space
+;
+: main 
+ #0
+ !t_var_i_1
+[
+ @t_var_i_1
+ #1
+ +
+ !t_var_i_1
+ ( call ) t_proc_square_2
+ @t_var_i_1
+ #10
+ <
+] while
+;
+main bye

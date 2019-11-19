@@ -1,0 +1,68 @@
+: main 
+ #5
+ -1 *
+ if 
+ #5
+ -1 *
+ putn space
+ then
+ #4
+ -1 *
+ if 
+ #4
+ -1 *
+ putn space
+ then
+ #3
+ -1 *
+ if 
+ #3
+ -1 *
+ putn space
+ then
+ #2
+ -1 *
+ if 
+ #2
+ -1 *
+ putn space
+ then
+ #1
+ -1 *
+ if 
+ #1
+ -1 *
+ putn space
+ then
+ #0
+ if 
+ #0
+ putn space
+ then
+ #1
+ if 
+ #1
+ putn space
+ then
+ #2
+ if 
+ #2
+ putn space
+ then
+ #3
+ if 
+ #3
+ putn space
+ then
+ #4
+ if 
+ #4
+ putn space
+ then
+ #5
+ if 
+ #5
+ putn space
+ then
+;
+main bye

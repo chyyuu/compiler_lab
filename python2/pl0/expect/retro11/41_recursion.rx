@@ -1,0 +1,40 @@
+variable t_var_number_1
+variable t_var_cursor_2
+( Procedure helper )
+variable t_var_bit_4
+ : t_proc_helper_3 
+ #0
+ !t_var_bit_4
+ @t_var_number_1
+ if 
+ #1
+ !t_var_bit_4
+ then
+ @t_var_number_1
+ #2
+ !t_var_number_1
+ @t_var_cursor_2
+ #0
+ >
+ if 
+ @t_var_cursor_2
+ #1
+ -
+ !t_var_cursor_2
+ ( call ) t_proc_helper_3
+ then
+ @t_var_bit_4
+ putn space
+;
+( Procedure binary )
+ : t_proc_binary_7 
+ 4
+ !t_var_cursor_2
+ ( call ) t_proc_helper_3
+;
+: main 
+ #5
+ !t_var_number_1
+ ( call ) t_proc_binary_7
+;
+main bye
