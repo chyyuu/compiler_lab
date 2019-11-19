@@ -408,11 +408,21 @@ def print_tree(tree, depth = 0):
         pass
     else:
         print("  " * depth + str(tree))
-
+
+def usage():
+    print "./pl0_parser.py inputfile"
+
 if __name__ == "__main__":
+    # Build the parser
     p = Parser()
 
-    code = sys.stdin.read()
+    if len(sys.argv)  <2 :
+            usage()
+            sys.exit(0)
+
+    input_file = sys.argv[1]
+    with open(input_file) as f:
+        code = f.read()
 
     p.input(code)
 

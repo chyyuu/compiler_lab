@@ -113,16 +113,20 @@ def t_error(t):
     print("Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
 
-# Build the lexer
-lexer = lex.lex()
-
 def create():
     return lexer.clone()
 
+# Build the lexer
+lexer = lex.lex()
+
 def usage():
-    print "./pl0_compiler.py inputfile"
+    print "./pl0_lexer.py inputfile"
+
+
 
 if __name__ == "__main__":
+
+
 
     if len(sys.argv)  <2 :
             usage()
