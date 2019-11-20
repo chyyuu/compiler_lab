@@ -1,8 +1,8 @@
 /*
- * PL/0 complier program for win32 platform (implemented in C)
+ * PL/0 complier program (implemented in C)
  *
- * The program has been test on Visual C++ 6.0, Visual C++.NET and
- * Visual C++.NET 2003, on Win98, WinNT, Win2000, WinXP and Win2003
+ * The program has been test on gcc-9.2.1 ubuntu 19.10 x86-64, Visual C++ 6.0, Visual C++.NET and
+ * Visual C++.NET 2003, on Win98, WinNT, Win2000, WinXP and Win2003 ( win32 )
  *
  * 使用方法：
  * 运行后输入PL/0源程序文件?
@@ -10,41 +10,36 @@
  * 回答是否输出名字表
  * fa.tmp输出虚拟机代码
  * fa1.tmp输出源文件及其各行对应的首地址
- * fa2.tmp输出结?
+ * fa2.tmp输出结果
  * fas.tmp输出名字表
  */
 
 #include <stdio.h>
 
 #include "pl0.h"
-#include "string.h"
+//#include "string.h"
 
 /* 解释执行时使用的栈 */
 #define stacksize 500
 
 
-int main()
+int main(int argc, char ** argv)
 {
 	bool nxtlev[symnum];
+    if(argc <2) {
+        printf("pl0 inputfile\n");
+        exit(-1);
+    }
 
-	printf("Input pl/0 file?   ");
-	scanf("%s", fname);     /* 输入文件名 */
-
-	fin = fopen(fname, "r");
+	fin = fopen(argv[1], "r"); /* 输入文件名 */
 
 	if (fin)
 	{
-		printf("List object code?(Y/N)");   /* 是否输出虚拟机代码 */
-		scanf("%s", fname);
-		listswitch = (fname[0]=='y' || fname[0]=='Y');
+        listswitch =true; /* 要输出虚拟机代码 */
 
-		printf("List symbol table?(Y/N)");  /* 是否输出名字表 */
-		scanf("%s", fname);
-		tableswitch = (fname[0]=='y' || fname[0]=='Y');
+        tableswitch = true;  /* 要输出名字表 */
 
 		fa1 = fopen("fa1.tmp", "w");
-		fprintf(fa1,"Input pl/0 file?   ");
-		fprintf(fa1,"%s\n",fname);
 
 		init();     /* 初始化 */
 
@@ -316,7 +311,7 @@ int getsym()
 		strcpy(id, a);
 		i = 0;
 		j = norw-1;
-		do {    /* 搜索当前符号是否为保留字 */
+		do {    /* 搜索当前符号是否为保留字, 使用二分法查找 */
 			k = (i+j)/2;
 			if (strcmp(id,word[k]) <= 0)
 			{
@@ -326,19 +321,19 @@ int getsym()
 			{
 				i = k + 1;
 			}
-		} while (i <= j);
+		} while (i <= j); /* 当前的单词是保留字 */
 		if (i-1 > j)
 		{
 			sym = wsym[k];
 		}
-		else
+		else /* 当前的单词是标识符 */
 		{
 			sym = ident; /* 搜索失败则，是名字或数字 */
 		}
 	}
 	else
 	{
-		if (ch>='0' && ch<='9')
+		if (ch>='0' && ch<='9') /* 当前的单词是数字 */
 		{           /* 检测是否为数字：以0..9开头 */
 			k = 0;
 			num = 0;
@@ -349,7 +344,7 @@ int getsym()
 				getchdo;
 			} while (ch>='0' && ch<='9'); /* 获取数字的值 */
 			k--;
-			if (k > nmax)
+			if (k > nmax) /* 数字位数太多 */
 			{
 				error(30);
 			}
@@ -448,7 +443,7 @@ int gen(enum fct x, int y, int z )
 * 符号），以及检测不通过时的错误号。
 *
 * s1:   我们需要的符号
-* s2:   如果不是我们需要的，则需要一个补救用的集?
+* s2:   如果不是我们需要的，则需要一个补救用的集合
 * n:    错误号
 */
 int test(bool* s1, bool* s2, int n)
@@ -466,11 +461,11 @@ int test(bool* s1, bool* s2, int n)
 }
 
 /*
-* 编译程序主?
+* 编译程序主体
 *
 * lev:    当前分程序所在层
 * tx:     名字表当前尾指针
-* fsys:   当前模块后跟符号集?
+* fsys:   当前模块后跟符号集合
 */
 int block(int lev, int tx, bool* fsys)
 {
@@ -480,16 +475,16 @@ int block(int lev, int tx, bool* fsys)
 	int tx0;                /* 保留初始tx */
 	int cx0;                /* 保留初始cx */
 	bool nxtlev[symnum];    /* 在下级函数的参数中，符号集合均为值参，但由于使用数组实现，
-							传递进来的是指针，为防止下级函数改变上级函数的集合，开辟新的空?
+							传递进来的是指针，为防止下级函数改变上级函数的集合，开辟新的空间
 							传递给下级函数*/
 
-	dx = 3;
+	dx = 3;                 /* 三个空间用于存放静态链SL、动态链DL和返回地址RA  */
 	tx0 = tx;               /* 记录本层名字的初始位置 */
-	table[tx].adr = cx;
+	table[tx].adr = cx;     /* 记录当前层代码的开始位置 */
 
-	gendo(jmp, 0, 0);
+	gendo(jmp, 0, 0);  /* 产生跳转指令，跳转位置未知暂时填0 */
 
-	if (lev > levmax)
+	if (lev > levmax) /* 嵌套层数过多 */
 	{
 		error(32);
 	}
@@ -503,12 +498,12 @@ int block(int lev, int tx, bool* fsys)
 			/* the original do...while(sym == ident) is problematic, thanks to calculous */
 			/* do { */
 			constdeclarationdo(&tx, lev, &dx);  /* dx的值会被constdeclaration改变，使用指针 */
-			while (sym == comma)
+			while (sym == comma) /* 遇到逗号继续定义常量 */
 			{
 				getsymdo;
 				constdeclarationdo(&tx, lev, &dx);
 			}
-			if (sym == semicolon)
+			if (sym == semicolon) /* 遇到分号结束定义常量 */
 			{
 				getsymdo;
 			}
@@ -537,7 +532,7 @@ int block(int lev, int tx, bool* fsys)
 			}
 			else
 			{
-				error(5);
+				error(5);  /* 漏掉了分号 */
 			}
 			/* } while (sym == ident);  */
 		}
@@ -590,11 +585,12 @@ int block(int lev, int tx, bool* fsys)
 		testdo(nxtlev, declbegsys, 7);
 	} while (inset(sym, declbegsys));   /* 直到没有声明符号 */
 
-	code[table[tx0].adr].a = cx;    /* 开始生成当前过程代码 */
-	table[tx0].adr = cx;            /* 当前过程代码地址 */
+    /* 开始生成当前过程代码 */
+	code[table[tx0].adr].a = cx;    /* 把前面生成的跳转语句的跳转位置改成当前位置 */
+	table[tx0].adr = cx;            /* 记录当前过程代码地址 */
 	table[tx0].size = dx;           /* 声明部分中每增加一条声明都会给dx增加1，声明部分已经结束，dx就是当前过程数据的size */
 	cx0 = cx;
-	gendo(inte, 0, dx);             /* 生成分配内存代码 */
+	gendo(inte, 0, dx);          /* 生成分配内存代码： 生成指令，此指令执行时在数据栈中为被调用的过程开辟dx个单元的数据区 */
 
 	if (tableswitch)        /* 输出名字表 */
 	{
@@ -631,13 +627,13 @@ int block(int lev, int tx, bool* fsys)
 	}
 
 	/* 语句后跟符号为分号或end */
-	memcpy(nxtlev, fsys, sizeof(bool)*symnum);  /* 每个后跟符号集和都包含上层后跟符号集和，以便补救 */
+	memcpy(nxtlev, fsys, sizeof(bool)*symnum);  /* 每个后继符号集和都包含上层后继符号集和，以便补救 */
 	nxtlev[semicolon] = true;
 	nxtlev[endsym] = true;
 	statementdo(nxtlev, &tx, lev);
 	gendo(opr, 0, 0);                       /* 每个过程出口都要使用的释放数据段指令 */
 	memset(nxtlev, 0, sizeof(bool)*symnum); /*分程序没有补救集合 */
-	testdo(fsys, nxtlev, 8);                /* 检测后跟符号正确性 */
+	testdo(fsys, nxtlev, 8);                /* 检测后继符号正确性 */
 	listcode(cx0);                          /* 输出代码 */
 	return 0;
 }
@@ -660,10 +656,10 @@ void enter(enum object k, int* ptx, int lev, int* pdx)
 	case constant:  /* 常量名字 */
 		if (num > amax)
 		{
-			error(31);  /* 数越界 */
+			error(31);  /* 常数越界 */
 			num = 0;
 		}
-		table[(*ptx)].val = num;
+		table[(*ptx)].val = num; /* 登记常数的值 */
 		break;
 	case variable:  /* 变量名字 */
 		table[(*ptx)].level = lev;
@@ -775,7 +771,7 @@ int statement(bool* fsys, int* ptx, int lev)
 
 	if (sym == ident)   /* 准备按照赋值语句处理 */
 	{
-		i = position(id, *ptx);
+		i = position(id, *ptx); /* 查找标识符在符号表中的位置 */
 		if (i == 0)
 		{
 			error(11);  /* 变量未找到 */
@@ -784,7 +780,7 @@ int statement(bool* fsys, int* ptx, int lev)
 		{
 			if(table[i].kind != variable)
 			{
-				error(12);  /* 赋值语句格式错误 */
+				error(12);  /* 赋值语句格式错误，赋值语句中，赋值号左部标识符应该是变量 */
 				i = 0;
 			}
 			else
@@ -850,7 +846,7 @@ int statement(bool* fsys, int* ptx, int lev)
 			if(sym != rparen)
 			{
 				error(33);  /* 格式错误，应是右括号 */
-				while (!inset(sym, fsys))   /* 出错补救，直到收到上层函数的后跟符号 */
+				while (!inset(sym, fsys))   /* 出错补救，直到收到上层函数的后继符号 */
 				{
 					getsymdo;
 				}
@@ -900,7 +896,7 @@ int statement(bool* fsys, int* ptx, int lev)
 						i = position(id, *ptx);
 						if (i == 0)
 						{
-							error(11);  /* 过程未找到 */
+							error(11);  /* 过程名未找到 */
 						}
 						else
 						{
@@ -923,7 +919,7 @@ int statement(bool* fsys, int* ptx, int lev)
 						getsymdo;
 						memcpy(nxtlev, fsys, sizeof(bool)*symnum);
 						nxtlev[thensym] = true;
-						nxtlev[dosym] = true;   /* 后跟符号为then或do */
+						nxtlev[dosym] = true;   /* 后继符号为then或do */
 						conditiondo(nxtlev, ptx, lev); /* 调用条件处理（逻辑运算）函数 */
 						if (sym == thensym)
 						{
@@ -945,10 +941,10 @@ int statement(bool* fsys, int* ptx, int lev)
 							getsymdo;
 							memcpy(nxtlev, fsys, sizeof(bool)*symnum);
 							nxtlev[semicolon] = true;
-							nxtlev[endsym] = true;  /* 后跟符号为分号或end */
+							nxtlev[endsym] = true;  /* 后继符号为分号或end */
 							/* 循环调用语句处理函数，直到下一个符号不是语句开始符号或收到end */
 							statementdo(nxtlev, ptx, lev);
-
+                            /* 如果分析完一句后遇到语句开始符或分号，则循环分析下一句语句 */
 							while (inset(sym, statbegsys) || sym==semicolon)
 							{
 								if (sym == semicolon)
@@ -977,7 +973,7 @@ int statement(bool* fsys, int* ptx, int lev)
 								cx1 = cx;   /* 保存判断条件操作的位置 */
 								getsymdo;
 								memcpy(nxtlev, fsys, sizeof(bool)*symnum);
-								nxtlev[dosym] = true;   /* 后跟符号为do */
+								nxtlev[dosym] = true;   /* 后继符号为do */
 								conditiondo(nxtlev, ptx, lev);  /* 调用条件处理 */
 								cx2 = cx;   /* 保存循环体的结束的下一个位置 */
 								gendo(jpc, 0, 0);   /* 生成条件跳转，但跳出循环的地址未知 */
@@ -1182,7 +1178,7 @@ int condition(bool* fsys, int* ptx, int lev)
 		expressiondo(nxtlev, ptx, lev);
 		if (sym!=eql && sym!=neq && sym!=lss && sym!=leq && sym!=gtr && sym!=geq)
 		{
-			error(20);
+			error(20); /* 应该为关系运算符 */
 		}
 		else
 		{
@@ -1241,67 +1237,67 @@ void interpret()
 		case opr:   /* 数学、逻辑运算 */
 			switch (i.a)
 			{
-			case 0:
+			case 0: /* 函数调用结束后返回 */
 				t = b;
 				p = s[t+2];
 				b = s[t+1];
 				break;
-			case 1:
+			case 1: /* 栈顶元素取反 */
 				s[t-1] = -s[t-1];
 				break;
-			case 2:
+			case 2: /* 次栈顶项加上栈顶项，退两个栈元素，相加值进栈 */
 				t--;
 				s[t-1] = s[t-1]+s[t];
 				break;
-			case 3:
+			case 3: /* 次栈顶项减去栈顶项 */
 				t--;
 				s[t-1] = s[t-1]-s[t];
 				break;
-			case 4:
+			case 4: /* 次栈顶项乘以栈顶项 */
 				t--;
 				s[t-1] = s[t-1]*s[t];
 				break;
-			case 5:
+			case 5: /* 次栈顶项除以栈顶项 */
 				t--;
 				s[t-1] = s[t-1]/s[t];
 				break;
-			case 6:
+			case 6: /* 栈顶元素的奇偶判断 */
 				s[t-1] = s[t-1]%2;
 				break;
-			case 8:
+			case 8: /* 次栈顶项与栈顶项是否相等 */
 				t--;
 				s[t-1] = (s[t-1] == s[t]);
 				break;
-			case 9:
+			case 9: /* 次栈顶项与栈顶项是否不等 */
 				t--;
 				s[t-1] = (s[t-1] != s[t]);
 				break;
-			case 10:
+			case 10: /* 次栈顶项是否小于栈顶项 */
 				t--;
 				s[t-1] = (s[t-1] < s[t]);
 				break;
-			case 11:
+			case 11: /* 次栈顶项是否大于等于栈顶项 */
 				t--;
 				s[t-1] = (s[t-1] >= s[t]);
 				break;
-			case 12:
+			case 12: /* 次栈顶项是否大于栈顶项 */
 				t--;
 				s[t-1] = (s[t-1] > s[t]);
 				break;
-			case 13:
+			case 13: /* 次栈顶项是否小于等于栈顶项 */
 				t--;
 				s[t-1] = (s[t-1] <= s[t]);
 				break;
-			case 14:
+			case 14: /* 栈顶值输出 */
 				printf("%d", s[t-1]);
 				fprintf(fa2, "%d", s[t-1]);
 				t--;
 				break;
-			case 15:
+			case 15: /* 输出换行符 */
 				printf("\n");
 				fprintf(fa2,"\n");
 				break;
-			case 16:
+			case 16: /* 读入一个输入置于栈顶 */
 				printf("?");
 				fprintf(fa2, "?");
 				scanf("%d", &(s[t]));
@@ -1325,7 +1321,7 @@ void interpret()
 			b = t;  /* 改变基地址指针值为新过程的基地址 */
 			p = i.a;    /* 跳转 */
 			break;
-		case inte:  /* 分配内存 */
+		case inte:  /* 分配内存，在数据栈中为被调用的过程开辟a个单元的数据区 */
 			t += i.a;
 			break;
 		case jmp:   /* 直接跳转 */
