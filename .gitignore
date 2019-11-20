@@ -115,3 +115,6 @@ ENV/
 .mypy_cache/
 
 .DS_Store
+
+# clion.sh IDE
+cmake-build-debug/
