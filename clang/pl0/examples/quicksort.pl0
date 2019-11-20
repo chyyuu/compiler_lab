@@ -1,0 +1,80 @@
+	const
+		n	= 10;
+	var
+		a(1:n), sp, stack(1:100), left, right, seed;
+
+	procedure printarray;
+	var i;
+	begin
+		i:= 1;
+		while i <= n do 	begin
+			write(a(i)); 
+			i:= i + 1 
+		end;
+		
+	end;
+
+	procedure initialize;
+	var i, k;
+	begin
+		i:= 1;
+                k := -1;
+                read (seed);
+                while seed < -512 do
+                   seed := seed/2;
+                while seed > 512 do
+                   seed := seed/2;
+		while i <= n do begin
+	                seed := ((seed + 30) - (seed + 30)/64 * 64)  * k;
+                        k:= -k;
+			a(i):= i + seed;
+			i:= i + 1;
+		end;
+	end;
+
+	procedure quicksort;
+	var i, j, x, w, middle;
+	begin
+		i:= left; j:= right;
+		middle:= (left + right)/2;
+		x:= a(middle);
+		while i < j do
+		begin
+			while a(i) < x do i:= i + 1;
+			while a(j) > x do j:= j - 1;
+			if i <= j then begin
+				w:= a(i); a(i):= a(j); a(j):= w;
+				i:= i + 1;
+				j:= j - 1;
+			end
+		end;
+		
+		
+		if left < j then begin
+                    sp := sp + 1;
+                    stack(sp) := right;
+                    right := j;
+                    call quicksort;
+                    right := stack(sp);
+                    sp := sp - 1;
+                end;
+		if i < right then begin
+                    sp := sp + 1;
+                    stack(sp) := left;
+                    left := i;
+                    call quicksort;
+                    left := stack(sp);
+                    sp := sp - 1;
+                end;
+	end;
+
+begin
+	call initialize;
+	call printarray;
+	write (0, 0, 0, 0, 0, 0, 0, 0);
+
+        sp := 0;
+        left := 1;     right := n;
+	call quicksort;
+	call printarray;
+end.

@@ -1,0 +1,42 @@
+const m = 4;
+var   a(1:m), ended, n;
+
+procedure next;
+var i;
+        procedure cycle;
+        var t;
+        begin
+            t := a(i);
+            while i < m do begin
+                a(i) := a(i+1);
+                i := i + 1;
+                end;
+            a(m) := t;
+        end;
+
+begin
+    if n > 1 then begin
+        if a(m-n+1) = n then begin
+            n := n - 1;
+            call next;
+            n := n + 1;
+        end;
+	if ended = 0 then begin
+            i := m-n+1;
+            call cycle;
+        end;
+    end
+    else
+        ended := 1;
+end;
+
+begin
+    a(1) := 1;    a(2) := 2;    a(3) := 3;    a(4) := 4;
+    ended := 0;
+
+    while ended = 0 do begin
+    	write (a(1), a(2), a(3), a(4));
+        n := m;
+        call next;
+    end;
+end.

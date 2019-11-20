@@ -1,0 +1,20 @@
+
+var a, b, c, max;
+
+procedure p;
+begin
+    read(a);
+    read(b);
+    read(c);
+    if a > b
+    then max := a
+    else max := b;
+    
+    if max > c
+    then max := max
+    else max := c;
+
+    write(max)
+end;
+
+call p.
