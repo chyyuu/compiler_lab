@@ -177,7 +177,7 @@ if __name__ == '__main__':
         f.write(contents)
 
     print "Generating Graph..."
-    os.system("dot -v -Tpdf -ograph.pdf graph.dot")
+    os.system("dot -Tpdf -ograph.pdf graph.dot")
 
     print "Opening Graph..."
-    os.system("open graph.pdf")
+    os.system("xdot graph.dot")

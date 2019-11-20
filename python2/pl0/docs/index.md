@@ -36,9 +36,10 @@ You will need to install the following requirements:
 - [GraphViz 2.2+](http://www.graphviz.org/) (Optional)
 
 
-####  Linux (Debian/Ubuntu)
+####  Linux (Debian/Ubuntu) 
+tested on ubuntu 19.10 x86-64
 ```
-$ sudo apt-get install python graphviz
+$ sudo apt-get install python graphviz xdot
 ```
 
 ### Getting Started
