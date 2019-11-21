@@ -1,0 +1,8 @@
+
+var f, c;
+
+begin
+    read(f);
+    c := 5 * (f - 32) / 9;
+    write(c)
+end.

@@ -1,0 +1,25 @@
+var n, m, fact, sum;
+
+procedure factorial;
+begin
+    if m > 0 then
+        begin
+            fact := fact * m;
+            m := m - 1;
+            call factorial
+        end;
+end;
+
+begin
+    read(n);
+    sum := 0;
+    while n > 0 do
+        begin
+            m := n;
+            fact := 1;
+            call factorial;
+            sum  := sum + fact;
+            n := n - 1
+        end;
+    write(sum)
+end.
