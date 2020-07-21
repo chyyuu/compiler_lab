@@ -1,7 +1,66 @@
+## example:
+
+@first
+@second
+> first
+> second
+@sum
+sum := first + second
+< sum
+< first * second
+
+OR
+
+@first@second>first>second@sum sum:=first+second<sum<first*second
+
+- The first two statements (@first and @second) declare two variables. Any
+variable in Calc represents a 64-bit floating-point number.
+- The third and fourth statements (> first and > second) are input statements.
+Each of these prints a question mark and waits for the user to type a number and
+press Enter. Such a number, if valid, is stored in the specified variable. If no
+number or an invalid number is typed before pressing Enter, the value 0 is
+assigned to the variable.
+- The fifth statement declares the sum variable.
+- The sixth statement (sum := first + second) is a Pascal-style assignment. It
+computes the sum of the first and second variables and assigns the result to
+the sum variable.
+- The seventh and eight statements perform output. The seventh statement (<
+sum) prints on the console the current value of the sum variable. The eighth
+statement (< first * second) computes the multiplication between the
+current values of the first and second variables, and then prints on the console
+the result of such multiplication.
+
+## sepc:
+
 <program> ::= "" | <program> <statement>
-<statement> ::= "@" <identifier> | ">" <identifier> | "<" <expr> |
-<identifier> ":=" <expr>
+<statement> ::= "@" <identifier> | ">" <identifier> | "<" <expr> |<identifier> ":=" <expr>
 <expr> ::= <term> | <expr> "+" <term> | <expr> "-" <term>
 <term> ::= <factor> | <term> "*" <factor> | <term> "/" <factor>
 <factor> ::= <identifier> | <literal> | "(" <expr> ")"
 <identifier> := <letter> | <identifier> <letter>
+
+
+- The first rule specifies that a program is an empty string or a program followed
+by a statement. This amounts to saying that a program is a list of zero or more
+statements.
+- The second rule specifies that a statement is either a @ character followed by an
+identifier, a > character followed by an identifier, a < character followed by an
+expression, or an identifier followed by the := pair of characters and then by an
+expression.
+- The third rule specifies that an expression is either a term or an expression
+followed by the + character and a term, or an expression followed by the -
+character and a term. This amounts to saying that an expression is a term
+followed by zero or more term items, where a term-item is a + or a - operator
+followed by a term.
+- Similarly, the fourth rule specifies that a term is either a factor or a term followed
+by the * character and a factor, or a term followed by the / character and a factor.
+This amounts to saying that a term is a factor followed by zero or more factor
+items, where a factor-item is a multiply or a divide operator followed by a factor.
+- The fifth rule specifies that a factor is either an identifier or a literal, or an
+expression enclosed in parentheses. This rule is satisfied only if the parentheses
+are correctly paired in code.
+- The sixth rule specifies that an identifier is a letter or an identifier followed by a
+letter. This amounts to saying that an identifier is a sequence of one or more
+letters. This syntax does not specify how case-sensitiveness is handled, but we
+will assume identifiers are case-sensitive.
+
