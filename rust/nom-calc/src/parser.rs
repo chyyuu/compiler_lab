@@ -8,6 +8,7 @@ use nom::{
     multi::many0,
     number::complete::double,
     sequence::{delimited, preceded, tuple},
+    Err, error::ErrorKind, Needed,
     IResult,
 };
 
@@ -19,8 +20,11 @@ fn parse_identifier(input: &str) -> IResult<&str, &str> {
 
 #[cfg(test)]
 mod tests {
+    use  super::*;
     #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
+    fn parse_ident() {
+        assert_eq!(parse_identifier("aB1c"), Ok(("1c", "aB")));
+        assert_eq!(parse_identifier("1c"), Err(Err::Error(("1c", ErrorKind::Alpha))));
+        assert_eq!(parse_identifier(""), Err(Err::Error(("", ErrorKind::Alpha))));
     }
 }
