@@ -1,3 +1,5 @@
+#![feature(box_syntax)]
+
 extern crate nom;
 use nom::{
     branch::alt,
@@ -35,7 +37,7 @@ pub type ParsedTerm<'a> = (ParsedFactor<'a>, Vec<(TermOperator, ParsedFactor<'a>
 
 pub type ParsedExpr<'a> = (ParsedTerm<'a>, Vec<(ExprOperator, ParsedTerm<'a>)>);
 
-fn parse_factor(input: &str) -> IResult<&str, ParsedFactor> {
+pub fn parse_factor(input: &str) -> IResult<&str, ParsedFactor> {
     preceded(
         skip_spaces,
         alt((
@@ -48,7 +50,7 @@ fn parse_factor(input: &str) -> IResult<&str, ParsedFactor> {
     )(input)
 }
 
-fn parse_term(input: &str) -> IResult<&str, ParsedTerm> {
+pub fn parse_term(input: &str) -> IResult<&str, ParsedTerm> {
     tuple((
         parse_factor,
         many0(tuple((
@@ -113,7 +115,8 @@ mod tests {
     fn test_parse_factor() {
         assert_eq!(parse_factor("aB"), Ok(("",ParsedFactor::Identifier("aB"))));
         assert_eq!(parse_factor("6.8"), Ok(("",ParsedFactor::Literal(6.8))));
-        //assert_eq!(parse_factor("a/b"), Ok(("",ParsedFactor::SubExpression(Box(6)))));
-        //assert_eq!(parse_factor(" a * b"), Ok(("",ParsedFactor::Literal(6.8))));
+        assert_eq!(parse_factor("(b)"),Ok(("",
+                   ParsedFactor::SubExpression(Box::<ParsedExpr>::new(((ParsedFactor::Identifier("b"),
+                                                                        Vec::<_>::new()), Vec::<_>::new()))))));
     }
 }

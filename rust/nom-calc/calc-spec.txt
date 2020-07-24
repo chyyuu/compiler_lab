@@ -38,7 +38,7 @@ the result of such multiplication.
 <term> ::= <factor> | <term> "*" <factor> | <term> "/" <factor>
 <factor> ::= <identifier> | <literal> | "(" <expr> ")"
 <identifier> := <letter> | <identifier> <letter>
-
+<literal> := f64
 
 - The first rule specifies that a program is an empty string or a program followed
 by a statement. This amounts to saying that a program is a list of zero or more
