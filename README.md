@@ -12,7 +12,7 @@ All programs have been tested on ubuntu 17.04 64 bit, and  some programs have be
 1. [some simple examples using ply&python](python2/ply_examples/)
 1. [calculator using rust](rust/calculator/)
 1. [lexers using rust/nom](rust/lexer/)
-1. [LL(1) Top-Down Parser](clang/LL-1-Parsing-Table-Calculator/)
+1. [LL(1) Top-Down Parser with Calc First/Follow/PS Sets](clang/LL-1-Parsing-Table-Calculator/)
 ## some automaton, turing machine codes
 
 For understanding some concepts and internals of "Formal Languages and Automata"
